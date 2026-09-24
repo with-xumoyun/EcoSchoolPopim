@@ -1,0 +1,2869 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Eco School PopIm</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+    --green:#16a34a;
+    --green2:#22c55e;
+    --bg:#f4f8f5;
+    --white:#fff;
+    --text:#172033;
+    --muted:#64748b;
+    --border:#e2e8f0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+body.dark{
+    --bg:#0f172a;
+    --white:#172033;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --border:#334155;
+}
+
+button,input,select{font:inherit}
+
+button{cursor:pointer}
+
+header{
+    background:linear-gradient(135deg,#15803d,#22c55e);
+    color:#fff;
+    padding:16px 5%;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.nav{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo-icon{
+    font-size:27px;
+    background:#ffffff22;
+    padding:10px;
+    border-radius:13px;
+}
+
+.logo h1{
+    font-size:21px;
+}
+
+.logo small{
+    opacity:.85;
+}
+
+.icon-btn{
+    border:0;
+    background:#ffffff22;
+    color:white;
+    padding:11px;
+    border-radius:12px;
+    font-size:18px;
+}
+
+.hero,
+.stats,
+.toolbar,
+.main{
+    max-width:1200px;
+    margin:25px auto;
+    padding:0 18px;
+}
+
+.hero-box{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:25px;
+    padding:38px;
+    box-shadow:0 8px 25px #0f172a12;
+}
+
+.badge{
+    display:inline-block;
+    background:#dcfce7;
+    color:#15803d;
+    padding:7px 12px;
+    border-radius:30px;
+    font-weight:bold;
+}
+
+.hero h2{
+    font-size:40px;
+    margin:12px 0;
+}
+
+.hero p{
+    color:var(--muted);
+    line-height:1.6;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.stat{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:20px;
+}
+
+.stat b{
+    display:block;
+    font-size:28px;
+    margin-top:7px;
+}
+
+.stat span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.toolbar{
+    display:flex;
+    gap:10px;
+}
+
+.search{
+    flex:1;
+}
+
+.search input,
+select,
+input{
+    width:100%;
+    padding:13px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:var(--white);
+    color:var(--text);
+    outline:none;
+}
+
+.rooms{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.floor{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:28px 0 13px;
+}
+
+.floor div{
+    height:1px;
+    background:var(--border);
+    flex:1;
+}
+
+.card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:19px;
+    box-shadow:0 8px 25px #0f172a10;
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.class{
+    background:#dcfce7;
+    color:#15803d;
+    padding:7px 10px;
+    border-radius:9px;
+    font-weight:bold;
+}
+
+.muted{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.pills{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin:15px 0;
+}
+
+.pill{
+    background:#f1f5f9;
+    padding:7px 9px;
+    border-radius:8px;
+    font-size:12px;
+}
+
+.dark .pill{
+    background:#263449;
+}
+
+.actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.btn{
+    border:0;
+    padding:11px 14px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.primary{
+    background:var(--green);
+    color:#fff;
+}
+
+.secondary{
+    background:#e2e8f0;
+    color:#334155;
+}
+
+.dark .secondary{
+    background:#263449;
+    color:#fff;
+}
+
+.danger{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:#020617aa;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:12px;
+    z-index:100;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:min(900px,100%);
+    max-height:92vh;
+    overflow:auto;
+    background:var(--white);
+    color:var(--text);
+    border-radius:22px;
+}
+
+.modal-head{
+    position:sticky;
+    top:0;
+    background:var(--white);
+    padding:19px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    z-index:5;
+}
+
+.close{
+    border:0;
+    background:#f1f5f9;
+    border-radius:9px;
+    font-size:20px;
+    width:38px;
+    height:38px;
+}
+
+.content{
+    padding:20px;
+}
+
+.passport{
+    background:linear-gradient(135deg,#166534,#22c55e);
+    color:white;
+    padding:23px;
+    border-radius:16px;
+    margin-bottom:17px;
+}
+
+.passport h2{
+    margin-bottom:6px;
+}
+
+.section{
+    background:var(--white);
+    border:1px solid var(--border);
+    padding:18px;
+    border-radius:16px;
+    margin-bottom:15px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.detail{
+    background:#f8fafc;
+    padding:14px;
+    border-radius:10px;
+}
+
+.dark .detail{
+    background:#1e293b;
+}
+
+.detail small{
+    display:block;
+    color:var(--muted);
+    margin-bottom:5px;
+}
+
+.plants{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.plant{
+    border:1px solid var(--border);
+    border-radius:13px;
+    overflow:hidden;
+}
+
+.plant img,
+.noimg{
+    width:100%;
+    height:145px;
+    object-fit:cover;
+    background:#dcfce7;
+}
+
+.noimg{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:45px;
+}
+
+.plant-body{
+    padding:12px;
+}
+
+.tabs{
+    display:flex;
+    gap:8px;
+    overflow:auto;
+    margin-bottom:17px;
+}
+
+.tab{
+    white-space:nowrap;
+    border:1px solid var(--border);
+    background:var(--white);
+    color:var(--text);
+    padding:10px 13px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.tab.active{
+    background:var(--green);
+    color:white;
+}
+
+.panel{
+    display:none;
+}
+
+.panel.active{
+    display:block;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.form-group{
+    margin-bottom:13px;
+}
+
+.form-group label{
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.preview{
+    width:100%;
+    max-height:220px;
+    object-fit:cover;
+    border-radius:12px;
+    margin-top:10px;
+    display:none;
+}
+
+.upload{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.upload label{
+    padding:12px 14px;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.camera{
+    background:#16a34a;
+    color:white;
+}
+
+.file{
+    background:#e2e8f0;
+    color:#334155;
+}
+
+.dark .file{
+    background:#263449;
+    color:white;
+}
+
+.manage-item{
+    border:1px solid var(--border);
+    padding:12px;
+    border-radius:12px;
+    margin-top:9px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.mini{
+    width:65px;
+    height:65px;
+    object-fit:cover;
+    border-radius:9px;
+}
+
+.empty{
+    text-align:center;
+    padding:25px;
+    color:var(--muted);
+    border:1px dashed #cbd5e1;
+    border-radius:12px;
+}
+
+#cameraVideo{
+    width:100%;
+    background:#000;
+    border-radius:15px;
+    max-height:65vh;
+    object-fit:cover;
+}
+
+#cameraCanvas{
+    display:none;
+}
+
+.camera-actions{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#0f172a;
+    color:white;
+    padding:13px 17px;
+    border-radius:10px;
+    display:none;
+    z-index:300;
+}
+
+.toast.show{
+    display:block;
+}
+
+.qr-container{
+    text-align:center;
+}
+
+.qr-container img{
+    width:230px;
+    height:230px;
+    border-radius:10px;
+}
+
+@media(max-width:850px){
+    .rooms{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .plants{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+    .rooms,
+    .plants,
+    .grid,
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .actions{
+        grid-template-columns:1fr;
+    }
+
+    .hero h2{
+        font-size:29px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="nav">
+
+<div class="logo">
+<div class="logo-icon">🌱</div>
+<div>
+<h1>Eco School PopIm</h1>
+<small>Raqamli xona pasporti</small>
+</div>
+</div>
+
+<button class="icon-btn" onclick="darkMode()">🌙</button>
+
+</div>
+</header>
+
+
+<section class="hero">
+
+<div class="hero-box">
+
+<span class="badge">🌿 ECO SCHOOL</span>
+
+<h2>
+Maktab xonalarining
+<span style="color:#16a34a">
+raqamli pasporti
+</span>
+</h2>
+
+<p>
+Har bir sinf, xona, o‘simlik va rozetka
+ma’lumotlarini yagona tizimda boshqarish.
+</p>
+
+</div>
+
+</section>
+
+
+<section class="stats">
+
+<div class="stat">
+🏫
+<b id="sc">0</b>
+<span>Sinf</span>
+</div>
+
+<div class="stat">
+🚪
+<b id="sr">0</b>
+<span>Xona</span>
+</div>
+
+<div class="stat">
+🌱
+<b id="sp">0</b>
+<span>O‘simlik</span>
+</div>
+
+<div class="stat">
+🔌
+<b id="ss">0</b>
+<span>Rozetka</span>
+</div>
+
+</section>
+
+
+<div class="toolbar">
+
+<div class="search">
+<input
+id="search"
+placeholder="🔎 Sinf, xona yoki rahbar..."
+oninput="render()">
+</div>
+
+<select id="floor" onchange="render()">
+<option value="all">🏢 Barcha qavatlar</option>
+<option value="1">1-qavat</option>
+<option value="2">2-qavat</option>
+<option value="3">3-qavat</option>
+</select>
+
+</div>
+
+
+<main
+class="main"
+id="rooms">
+</main>
+
+
+<!-- KO‘RISH -->
+
+<div
+class="modal"
+id="viewModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<b>🏠 Xona pasporti</b>
+
+<button
+class="close"
+onclick="closeM('viewModal')">
+×
+</button>
+
+</div>
+
+<div
+class="content"
+id="viewContent">
+</div>
+
+</div>
+
+</div>
+
+
+<!-- LOGIN -->
+
+<div
+class="modal"
+id="loginModal"
+>
+
+<div
+class="modal-box"
+style="max-width:430px"
+>
+
+<div class="modal-head">
+
+<b>🔐 Boshqaruvga kirish</b>
+
+<button
+class="close"
+onclick="closeM('loginModal')">
+×
+</button>
+
+</div>
+
+<div class="content">
+
+<p class="muted">
+Ushbu sinfning maxfiy parolini kiriting.
+</p>
+
+<div class="form-group">
+
+<label>Parol</label>
+
+<input
+id="password"
+type="password"
+placeholder="Maxfiy parol">
+
+</div>
+
+<button
+class="btn primary"
+style="width:100%"
+onclick="login()">
+🔓 Kirish
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BOSHQARUV -->
+
+<div
+class="modal"
+id="manageModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-head">
+
+<b id="manageTitle">
+⚙️ Boshqarish
+</b>
+
+<button
+class="close"
+onclick="closeM('manageModal')">
+×
+</button>
+
+</div>
+
+
+<div class="content">
+
+<div class="tabs">
+
+<button
+class="tab active"
+onclick="tab('roomPanel',this)">
+🏫 Xona
+</button>
+
+<button
+class="tab"
+onclick="tab('plantPanel',this)">
+🌱 O‘simliklar
+</button>
+
+<button
+class="tab"
+onclick="tab('socketPanel',this)">
+🔌 Rozetkalar
+</button>
+
+<button
+class="tab"
+onclick="tab('qrPanel',this)">
+📱 QR
+</button>
+
+</div>
+
+
+<!-- XONA -->
+
+<div
+class="panel active"
+id="roomPanel">
+
+<div class="section">
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Sinf</label>
+<input id="editClass">
+</div>
+
+<div class="form-group">
+<label>Xona</label>
+<input id="editRoom">
+</div>
+
+</div>
+
+<div class="form-group">
+<label>Sinf rahbari</label>
+<input id="editTeacher">
+</div>
+
+<div class="form-group">
+<label>Mas’ul shaxs</label>
+<input id="editResp">
+</div>
+
+<button
+class="btn primary"
+onclick="saveRoom()">
+💾 Saqlash
+</button>
+
+</div>
+
+</div>
+
+
+<!-- O‘SIMLIKLAR -->
+
+<div
+class="panel"
+id="plantPanel">
+
+<div class="section">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px">
+
+<b>🌱 O‘simliklar</b>
+
+<button
+class="btn primary"
+onclick="showPlantForm()">
++ O‘simlik
+</button>
+
+</div>
+
+
+<div
+id="plantForm"
+style="display:none;margin-top:15px">
+
+<div class="form-group">
+
+<label>
+📷 O‘simlik rasmi
+</label>
+
+
+<div class="upload">
+
+<!-- HAQIQIY KAMERA -->
+
+<label
+class="camera"
+onclick="openCamera()">
+
+📷 Kamera
+
+</label>
+
+
+<!-- FAYL -->
+
+<label class="file">
+
+📁 Fayl tanlash
+
+<input
+id="filePicker"
+type="file"
+accept="image/*"
+style="display:none"
+onchange="filePicked(event)">
+
+</label>
+
+</div>
+
+
+<img
+id="preview"
+class="preview">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+🌿 O‘simlik turi / nomi
+</label>
+
+<input
+id="plantName"
+placeholder="Masalan: Fikus">
+
+</div>
+
+
+<div class="form-group">
+
+<label>
+🔢 Miqdori
+</label>
+
+<input
+id="plantCount"
+type="number"
+min="1"
+value="1">
+
+</div>
+
+
+<button
+class="btn primary"
+onclick="savePlant()">
+💾 Saqlash
+</button>
+
+<button
+class="btn secondary"
+onclick="cancelPlant()">
+Bekor qilish
+</button>
+
+</div>
+
+
+<div id="plantList"></div>
+
+</div>
+
+</div>
+
+
+<!-- ROZETKA -->
+
+<div
+class="panel"
+id="socketPanel">
+
+<div class="section">
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center">
+
+<b>🔌 Rozetkalar</b>
+
+<button
+class="btn primary"
+onclick="showSocketForm()">
++ Rozetka
+</button>
+
+</div>
+
+
+<div
+id="socketForm"
+style="display:none;margin-top:15px">
+
+<div class="form-group">
+
+<label>Rozetka turi</label>
+
+<select id="socketType">
+
+<option>Oddiy</option>
+<option>Ikki qavatli</option>
+<option>USB</option>
+<option>Boshqa</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Miqdori</label>
+
+<input
+id="socketCount"
+type="number"
+min="1"
+value="1">
+
+</div>
+
+
+<button
+class="btn primary"
+onclick="saveSocket()">
+💾 Saqlash
+</button>
+
+<button
+class="btn secondary"
+onclick="cancelSocket()">
+Bekor qilish
+</button>
+
+</div>
+
+
+<div id="socketList"></div>
+
+</div>
+
+</div>
+
+
+<!-- QR -->
+
+<div
+class="panel"
+id="qrPanel">
+
+<div class="section qr-container">
+
+<h3>📱 Xona QR kodi</h3>
+
+<div id="qr"
+style="margin:20px">
+</div>
+
+<p class="muted">
+QR kod skaner qilinganda shu xonaning
+raqamli pasporti ochiladi.
+</p>
+
+<br>
+
+<button
+class="btn primary"
+onclick="printQR()">
+🖨️ Chop etish
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- HAQIQIY KAMERA -->
+
+<div
+class="modal"
+id="cameraModal">
+
+<div
+class="modal-box"
+style="
+max-width:650px;
+background:#000;
+color:white">
+
+<div
+class="modal-head"
+style="
+background:#000;
+border-color:#333">
+
+<b>📷 Rasmga olish</b>
+
+<button
+class="close"
+onclick="stopCamera()">
+×
+</button>
+
+</div>
+
+
+<div class="content">
+
+<video
+id="cameraVideo"
+autoplay
+playsinline>
+</video>
+
+<canvas
+id="cameraCanvas">
+</canvas>
+
+
+<div class="camera-actions">
+
+<button
+class="btn primary"
+onclick="takePhoto()">
+📸 Suratga olish
+</button>
+
+<button
+class="btn secondary"
+onclick="stopCamera()">
+Bekor qilish
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="toast"
+id="toast">
+</div>
+
+
+<script>
+
+/* ==========================================
+   SINFLAR
+========================================== */
+
+const defaults=[
+
+[1,"5.01","Toshtemirova Latofat","213","T-L-501-213"],
+[2,"5.02","Asqarova Noila","104","A-N-502-104"],
+[3,"6.01","Yunusova Dilnoza","103","Y-D-601-103"],
+[4,"6.02","Raximov Nohidjon","217","R-N-602-217"],
+[5,"7.01","Usmonova Dilafruz","307","U-D-701-307"],
+[6,"7.02","Yuldasheva Mastura","204","Y-M-702-204"],
+[7,"7.03","Abdullayeva Shahnoza","303","A-Sh-703-303"],
+[8,"7.04","Botirova Shahnoza","218","B-Sh-704-218"],
+[9,"8.01","Mahmudova Noila","216","M-N-801-216"],
+[10,"8.02","Yusupova Gulhayo","215","Y-G-802-215"],
+[11,"8.03","Yo'ldasheva Feruza","101","Y-F-803-101"],
+[12,"9.01","Pulatova Shahnoza","115","P-Sh-901-115"],
+[13,"10.01","Sultova Iroda","301","S-I-1001-301"],
+[14,"11.01","Mirzatillayeva Munira","206","M-M-1101-206"]
+
+];
+
+
+let data =
+JSON.parse(
+localStorage.getItem("ecoPopImData")
+);
+
+
+if(!data){
+
+data =
+defaults.map(x=>({
+
+id:x[0],
+className:x[1],
+teacher:x[2],
+room:x[3],
+password:x[4],
+responsible:x[1]+" sinfi",
+plants:[],
+sockets:[]
+
+}));
+
+}
+
+
+let selected=null;
+
+let editPlantId=null;
+
+let editSocketId=null;
+
+let photo="";
+
+let stream=null;
+
+
+/* ==========================================
+   SAQLASH
+========================================== */
+
+function save(){
+
+localStorage.setItem(
+"ecoPopImData",
+JSON.stringify(data)
+);
+
+}
+
+
+/* ==========================================
+   QAVAT
+========================================== */
+
+function getFloor(room){
+
+let n=parseInt(room);
+
+if(n>=300)return 3;
+
+if(n>=200)return 2;
+
+return 1;
+
+}
+
+
+/* ==========================================
+   TOTAL
+========================================== */
+
+function total(arr){
+
+return arr.reduce(
+(a,x)=>a+Number(x.count||0),
+0
+);
+
+}
+
+
+/* ==========================================
+   ESCAPE
+========================================== */
+
+function esc(x){
+
+return String(x??"")
+.replace(/[&<>"']/g,m=>({
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[m]));
+
+}
+
+
+/* ==========================================
+   RENDER
+========================================== */
+
+function render(){
+
+let q =
+document
+.getElementById("search")
+.value
+.toLowerCase();
+
+let f =
+document
+.getElementById("floor")
+.value;
+
+
+let arr =
+data.filter(c=>
+
+(
+!q ||
+
+(
+c.className+
+" "+
+c.room+
+" "+
+c.teacher
+)
+.toLowerCase()
+.includes(q)
+
+)&&
+
+(
+f==="all" ||
+getFloor(c.room)==f
+)
+
+);
+
+
+let groups={};
+
+
+arr.forEach(c=>{
+
+let fl=getFloor(c.room);
+
+if(!groups[fl])
+groups[fl]=[];
+
+groups[fl].push(c);
+
+});
+
+
+let html="";
+
+
+Object.keys(groups)
+.sort()
+.forEach(fl=>{
+
+html+=`
+
+<div class="floor">
+
+<h3>🏢 ${fl}-qavat</h3>
+
+<div></div>
+
+</div>
+
+<div class="rooms">
+
+`;
+
+
+groups[fl].forEach(c=>{
+
+html+=`
+
+<div class="card">
+
+<div class="top">
+
+<span class="class">
+${esc(c.className)}
+</span>
+
+<span class="muted">
+🚪 ${esc(c.room)}-xona
+</span>
+
+</div>
+
+
+<p style="margin-top:15px">
+
+<span class="muted">
+Sinf rahbari
+</span>
+
+<br>
+
+<b>
+${esc(c.teacher)}
+</b>
+
+</p>
+
+
+<div class="pills">
+
+<span class="pill">
+🌱 ${total(c.plants)} ta
+</span>
+
+<span class="pill">
+🔌 ${total(c.sockets)} ta
+</span>
+
+</div>
+
+
+<div class="actions">
+
+<button
+class="btn secondary"
+onclick="view(${c.id})">
+
+👁️ Ko‘rish
+
+</button>
+
+
+<button
+class="btn primary"
+onclick="openLogin(${c.id})">
+
+🔐 Boshqarish
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+html+=`</div>`;
+
+});
+
+
+document.getElementById("rooms").innerHTML =
+html ||
+`<div class="empty">🔎 Hech narsa topilmadi</div>`;
+
+
+document.getElementById("sc").textContent =
+data.length;
+
+document.getElementById("sr").textContent =
+data.length;
+
+document.getElementById("sp").textContent =
+data.reduce(
+(a,c)=>a+total(c.plants),0
+);
+
+document.getElementById("ss").textContent =
+data.reduce(
+(a,c)=>a+total(c.sockets),0
+);
+
+}
+
+
+/* ==========================================
+   XONA KO‘RISH
+========================================== */
+
+function view(id){
+
+selected =
+data.find(c=>c.id===id);
+
+if(!selected)return;
+
+
+let c=selected;
+
+
+let plants =
+c.plants.length
+
+?
+
+`<div class="plants">
+
+${c.plants.map(p=>`
+
+<div class="plant">
+
+${
+p.image
+
+?
+
+`<img src="${p.image}">`
+
+:
+
+`<div class="noimg">🌱</div>`
+}
+
+<div class="plant-body">
+
+<b>
+${esc(p.name)}
+</b>
+
+<div class="muted">
+${p.count} ta
+</div>
+
+</div>
+
+</div>
+
+`).join("")}
+
+</div>`
+
+:
+
+`<div class="empty">
+🌱 O‘simlik kiritilmagan.
+</div>`;
+
+
+let sockets =
+c.sockets.length
+
+?
+
+c.sockets.map(s=>`
+
+<div class="manage-item">
+
+<b>
+🔌 ${esc(s.type)}
+</b>
+
+<span>
+${s.count} ta
+</span>
+
+</div>
+
+`).join("")
+
+:
+
+`<div class="empty">
+🔌 Ma’lumot kiritilmagan.
+</div>`;
+
+
+document.getElementById(
+"viewContent"
+).innerHTML=`
+
+<div class="passport">
+
+<h2>
+${esc(c.className)}
+—
+${esc(c.room)}-xona
+</h2>
+
+<p>
+🌿 Eco School PopIm xona pasporti
+</p>
+
+</div>
+
+
+<div class="section">
+
+<div class="grid">
+
+<div class="detail">
+<small>Sinf</small>
+<b>${esc(c.className)}</b>
+</div>
+
+<div class="detail">
+<small>Xona</small>
+<b>${esc(c.room)}</b>
+</div>
+
+<div class="detail">
+<small>Rahbar</small>
+<b>${esc(c.teacher)}</b>
+</div>
+
+<div class="detail">
+<small>Mas’ul</small>
+<b>${esc(c.responsible)}</b>
+</div>
+
+<div class="detail">
+<small>O‘simlik</small>
+<b>🌱 ${total(c.plants)} ta</b>
+</div>
+
+<div class="detail">
+<small>Rozetka</small>
+<b>🔌 ${total(c.sockets)} ta</b>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<h3>
+🌱 O‘simliklar
+</h3>
+
+<br>
+
+${plants}
+
+</div>
+
+
+<div class="section">
+
+<h3>
+🔌 Rozetkalar
+</h3>
+
+<br>
+
+${sockets}
+
+</div>
+
+
+<button
+class="btn primary"
+style="width:100%"
+onclick="
+closeM('viewModal');
+openLogin(${c.id})
+">
+
+🔐 Sinfni boshqarish
+
+</button>
+
+`;
+
+
+openM("viewModal");
+
+}
+
+
+/* ==========================================
+   LOGIN
+========================================== */
+
+function openLogin(id){
+
+selected =
+data.find(c=>c.id===id);
+
+document.getElementById(
+"password"
+).value="";
+
+openM("loginModal");
+
+}
+
+
+function login(){
+
+if(
+document.getElementById(
+"password"
+).value
+===
+selected.password
+){
+
+closeM("loginModal");
+
+manage(selected.id);
+
+toast("✅ Muvaffaqiyatli kirildi");
+
+}else{
+
+toast("❌ Parol noto‘g‘ri");
+
+}
+
+}
+
+
+document.getElementById(
+"password"
+).addEventListener(
+"keydown",
+e=>{
+
+if(e.key==="Enter")
+login();
+
+});
+
+
+/* ==========================================
+   MANAGEMENT
+========================================== */
+
+function manage(id){
+
+selected =
+data.find(c=>c.id===id);
+
+
+document.getElementById(
+"manageTitle"
+).textContent =
+`⚙️ ${selected.className}-sinfni boshqarish`;
+
+
+document.getElementById(
+"editClass"
+).value =
+selected.className;
+
+
+document.getElementById(
+"editRoom"
+).value =
+selected.room;
+
+
+document.getElementById(
+"editTeacher"
+).value =
+selected.teacher;
+
+
+document.getElementById(
+"editResp"
+).value =
+selected.responsible;
+
+
+renderPlants();
+
+renderSockets();
+
+makeQR();
+
+
+document.querySelectorAll(
+".tab"
+).forEach(
+(x,i)=>x.classList.toggle(
+"active",i===0
+)
+);
+
+
+document.querySelectorAll(
+".panel"
+).forEach(
+(x,i)=>x.classList.toggle(
+"active",i===0
+)
+);
+
+
+openM("manageModal");
+
+}
+
+
+/* ==========================================
+   TAB
+========================================== */
+
+function tab(id,button){
+
+document.querySelectorAll(
+".panel"
+).forEach(
+x=>x.classList.remove("active")
+);
+
+
+document.querySelectorAll(
+".tab"
+).forEach(
+x=>x.classList.remove("active")
+);
+
+
+document.getElementById(id)
+.classList.add("active");
+
+
+button.classList.add("active");
+
+}
+
+
+/* ==========================================
+   XONA SAQLASH
+========================================== */
+
+function saveRoom(){
+
+selected.className =
+document.getElementById(
+"editClass"
+).value.trim();
+
+
+selected.room =
+document.getElementById(
+"editRoom"
+).value.trim();
+
+
+selected.teacher =
+document.getElementById(
+"editTeacher"
+).value.trim();
+
+
+selected.responsible =
+document.getElementById(
+"editResp"
+).value.trim();
+
+
+save();
+
+render();
+
+makeQR();
+
+toast("✅ Saqlandi");
+
+}
+
+
+/* ==========================================
+   O‘SIMLIK FORMASI
+========================================== */
+
+function showPlantForm(){
+
+editPlantId=null;
+
+photo="";
+
+
+document.getElementById(
+"plantName"
+).value="";
+
+
+document.getElementById(
+"plantCount"
+).value=1;
+
+
+document.getElementById(
+"filePicker"
+).value="";
+
+
+document.getElementById(
+"preview"
+).style.display="none";
+
+
+document.getElementById(
+"plantForm"
+).style.display="block";
+
+}
+
+
+/* ==========================================
+   FAYL
+========================================== */
+
+function filePicked(event){
+
+let file =
+event.target.files[0];
+
+if(!file)return;
+
+
+if(!file.type.startsWith("image/")){
+
+toast("❌ Faqat rasm tanlang");
+
+return;
+
+}
+
+
+let reader =
+new FileReader();
+
+
+reader.onload=function(){
+
+photo =
+reader.result;
+
+
+document.getElementById(
+"preview"
+).src=photo;
+
+
+document.getElementById(
+"preview"
+).style.display="block";
+
+};
+
+
+reader.readAsDataURL(file);
+
+}
+
+
+/* ==========================================
+   HAQIQIY KAMERA
+========================================== */
+
+async function openCamera(){
+
+if(
+!navigator.mediaDevices ||
+!navigator.mediaDevices.getUserMedia
+){
+
+toast(
+"❌ Bu brauzer kamerani qo‘llamaydi"
+);
+
+return;
+
+}
+
+
+try{
+
+stream =
+await navigator.mediaDevices.getUserMedia({
+
+video:{
+facingMode:{
+ideal:"environment"
+}
+},
+
+audio:false
+
+});
+
+
+document.getElementById(
+"cameraVideo"
+).srcObject =
+stream;
+
+
+openM("cameraModal");
+
+
+}catch(error){
+
+toast(
+"❌ Kameraga ruxsat berilmadi"
+);
+
+}
+
+}
+
+
+/* ==========================================
+   SURATGA OLISH
+========================================== */
+
+function takePhoto(){
+
+let video =
+document.getElementById(
+"cameraVideo"
+);
+
+
+let canvas =
+document.getElementById(
+"cameraCanvas"
+);
+
+
+canvas.width =
+video.videoWidth;
+
+
+canvas.height =
+video.videoHeight;
+
+
+let ctx =
+canvas.getContext("2d");
+
+
+ctx.drawImage(
+video,
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+
+photo =
+canvas.toDataURL(
+"image/jpeg",
+0.85
+);
+
+
+document.getElementById(
+"preview"
+).src=photo;
+
+
+document.getElementById(
+"preview"
+).style.display="block";
+
+
+stopCamera();
+
+
+document.getElementById(
+"plantForm"
+).style.display="block";
+
+
+toast("📸 Surat olindi");
+
+}
+
+
+/* ==========================================
+   KAMERANI YOPISH
+========================================== */
+
+function stopCamera(){
+
+if(stream){
+
+stream
+.getTracks()
+.forEach(track=>track.stop());
+
+stream=null;
+
+}
+
+closeM("cameraModal");
+
+}
+
+
+/* ==========================================
+   O‘SIMLIK SAQLASH
+========================================== */
+
+function savePlant(){
+
+let name =
+document.getElementById(
+"plantName"
+).value.trim();
+
+
+let count =
+Number(
+document.getElementById(
+"plantCount"
+).value
+);
+
+
+if(!name){
+
+toast(
+"⚠️ O‘simlik nomini kiriting"
+);
+
+return;
+
+}
+
+
+if(count<1){
+
+toast(
+"⚠️ Miqdor noto‘g‘ri"
+);
+
+return;
+
+}
+
+
+if(editPlantId){
+
+let p =
+selected.plants.find(
+x=>x.id===editPlantId
+);
+
+
+p.name=name;
+
+p.count=count;
+
+
+if(photo)
+p.image=photo;
+
+
+}else{
+
+selected.plants.push({
+
+id:Date.now(),
+
+name:name,
+
+count:count,
+
+image:photo
+
+});
+
+}
+
+
+save();
+
+render();
+
+renderPlants();
+
+cancelPlant();
+
+toast("🌱 O‘simlik saqlandi");
+
+}
+
+
+/* ==========================================
+   O‘SIMLIKLAR RO‘YXATI
+========================================== */
+
+function renderPlants(){
+
+let box =
+document.getElementById(
+"plantList"
+);
+
+
+if(!selected.plants.length){
+
+box.innerHTML=
+`<div class="empty">
+🌱 Hozircha o‘simlik yo‘q.
+</div>`;
+
+return;
+
+}
+
+
+box.innerHTML =
+selected.plants.map(p=>`
+
+<div class="manage-item">
+
+${
+p.image
+
+?
+
+`<img
+class="mini"
+src="${p.image}">
+`
+
+:
+
+`<div
+class="mini"
+style="
+display:grid;
+place-items:center;
+background:#dcfce7;
+font-size:28px">
+🌱
+</div>`
+}
+
+
+<div style="flex:1">
+
+<b>
+${esc(p.name)}
+</b>
+
+<div class="muted">
+${p.count} ta
+</div>
+
+</div>
+
+
+<button
+class="btn secondary"
+onclick="editPlant(${p.id})">
+✏️
+</button>
+
+
+<button
+class="btn danger"
+onclick="deletePlant(${p.id})">
+🗑️
+</button>
+
+</div>
+
+`).join("");
+
+}
+
+
+/* ==========================================
+   TAHRIRLASH
+========================================== */
+
+function editPlant(id){
+
+let p =
+selected.plants.find(
+x=>x.id===id
+);
+
+
+editPlantId=id;
+
+photo=p.image||"";
+
+
+document.getElementById(
+"plantName"
+).value=p.name;
+
+
+document.getElementById(
+"plantCount"
+).value=p.count;
+
+
+if(p.image){
+
+document.getElementById(
+"preview"
+).src=p.image;
+
+
+document.getElementById(
+"preview"
+).style.display="block";
+
+}
+
+
+document.getElementById(
+"plantForm"
+).style.display="block";
+
+}
+
+
+/* ==========================================
+   O‘CHIRISH
+========================================== */
+
+function deletePlant(id){
+
+if(
+!confirm(
+"Bu o‘simlikni o‘chirasizmi?"
+)
+)return;
+
+
+selected.plants =
+selected.plants.filter(
+x=>x.id!==id
+);
+
+
+save();
+
+render();
+
+renderPlants();
+
+toast("🗑️ O‘chirildi");
+
+}
+
+
+function cancelPlant(){
+
+document.getElementById(
+"plantForm"
+).style.display="none";
+
+editPlantId=null;
+
+photo="";
+
+}
+
+
+/* ==========================================
+   ROZETKA
+========================================== */
+
+function showSocketForm(){
+
+editSocketId=null;
+
+document.getElementById(
+"socketType"
+).value="Oddiy";
+
+
+document.getElementById(
+"socketCount"
+).value=1;
+
+
+document.getElementById(
+"socketForm"
+).style.display="block";
+
+}
+
+
+function cancelSocket(){
+
+document.getElementById(
+"socketForm"
+).style.display="none";
+
+editSocketId=null;
+
+}
+
+
+function saveSocket(){
+
+let type =
+document.getElementById(
+"socketType"
+).value;
+
+
+let count =
+Number(
+document.getElementById(
+"socketCount"
+).value
+);
+
+
+if(count<1)return;
+
+
+if(editSocketId){
+
+let s =
+selected.sockets.find(
+x=>x.id===editSocketId
+);
+
+
+s.type=type;
+
+s.count=count;
+
+
+}else{
+
+selected.sockets.push({
+
+id:Date.now(),
+
+type:type,
+
+count:count
+
+});
+
+}
+
+
+save();
+
+render();
+
+renderSockets();
+
+cancelSocket();
+
+toast("🔌 Rozetka saqlandi");
+
+}
+
+
+function renderSockets(){
+
+let box =
+document.getElementById(
+"socketList"
+);
+
+
+if(!selected.sockets.length){
+
+box.innerHTML=
+`<div class="empty">
+🔌 Hozircha rozetka yo‘q.
+</div>`;
+
+return;
+
+}
+
+
+box.innerHTML =
+selected.sockets.map(s=>`
+
+<div class="manage-item">
+
+<b>
+🔌 ${esc(s.type)}
+</b>
+
+<span>
+${s.count} ta
+</span>
+
+<button
+class="btn secondary"
+onclick="editSocket(${s.id})">
+✏️
+</button>
+
+<button
+class="btn danger"
+onclick="deleteSocket(${s.id})">
+🗑️
+</button>
+
+</div>
+
+`).join("");
+
+}
+
+
+function editSocket(id){
+
+let s =
+selected.sockets.find(
+x=>x.id===id
+);
+
+
+editSocketId=id;
+
+
+document.getElementById(
+"socketType"
+).value=s.type;
+
+
+document.getElementById(
+"socketCount"
+).value=s.count;
+
+
+document.getElementById(
+"socketForm"
+).style.display="block";
+
+}
+
+
+function deleteSocket(id){
+
+if(
+!confirm(
+"Bu rozetkani o‘chirasizmi?"
+)
+)return;
+
+
+selected.sockets =
+selected.sockets.filter(
+x=>x.id!==id
+);
+
+
+save();
+
+render();
+
+renderSockets();
+
+toast("🗑️ O‘chirildi");
+
+}
+
+
+/* ==========================================
+   QR — TUZATILGAN
+========================================== */
+
+function makeQR(){
+
+if(!selected)return;
+
+
+/*
+   QR shu index.htmlning o‘ziga
+   ?room=ID parametrini qo‘shadi.
+*/
+
+let base =
+window.location.href
+.split("?")[0];
+
+
+let qrURL =
+base+
+"?room="+
+encodeURIComponent(
+selected.id
+);
+
+
+let qrImage =
+"https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+
+encodeURIComponent(qrURL);
+
+
+document.getElementById(
+"qr"
+).innerHTML=`
+
+<img
+src="${qrImage}"
+alt="Xona QR kodi"
+onerror="
+this.style.display='none';
+document.getElementById('qrError').style.display='block';
+">
+
+<div
+id="qrError"
+style="
+display:none;
+padding:15px;
+background:#fee2e2;
+color:#991b1b;
+border-radius:10px;
+margin-top:10px;
+">
+
+QR yaratish uchun internet kerak.
+
+</div>
+
+<div
+class="muted"
+style="
+word-break:break-all;
+margin-top:10px;
+font-size:11px">
+
+${esc(qrURL)}
+
+</div>
+
+`;
+
+}
+
+
+/* ==========================================
+   QR CHOP ETISH
+========================================== */
+
+function printQR(){
+
+let qr =
+document.getElementById(
+"qr"
+).innerHTML;
+
+
+let w =
+window.open(
+"",
+"_blank"
+);
+
+
+w.document.write(`
+
+<html>
+
+<head>
+
+<title>
+Eco School PopIm QR
+</title>
+
+</head>
+
+<body
+style="
+text-align:center;
+font-family:Arial;
+padding:40px">
+
+<h2>
+Eco School PopIm
+</h2>
+
+<h3>
+${esc(selected.className)}
+—
+${esc(selected.room)}-xona
+</h3>
+
+${qr}
+
+</body>
+
+</html>
+
+`);
+
+
+w.document.close();
+
+w.print();
+
+}
+
+
+/* ==========================================
+   QR ORQALI XONANI AVTOMATIK OCHISH
+========================================== */
+
+function openRoomFromQR(){
+
+let params =
+new URLSearchParams(
+window.location.search
+);
+
+
+let roomId =
+params.get("room");
+
+
+if(!roomId)return;
+
+
+let room =
+data.find(
+c=>String(c.id)===String(roomId)
+);
+
+
+if(!room)return;
+
+
+setTimeout(()=>{
+
+view(room.id);
+
+},300);
+
+}
+
+
+/* ==========================================
+   MODAL
+========================================== */
+
+function openM(id){
+
+document
+.getElementById(id)
+.classList.add("show");
+
+}
+
+
+function closeM(id){
+
+document
+.getElementById(id)
+.classList.remove("show");
+
+}
+
+
+document
+.querySelectorAll(".modal")
+.forEach(modal=>{
+
+modal.addEventListener(
+"click",
+e=>{
+
+if(e.target===modal){
+
+if(
+modal.id==="cameraModal"
+){
+
+stopCamera();
+
+}else{
+
+modal.classList.remove(
+"show"
+);
+
+}
+
+}
+
+}
+);
+
+});
+
+
+/* ==========================================
+   DARK MODE
+========================================== */
+
+function darkMode(){
+
+document.body.classList.toggle(
+"dark"
+);
+
+localStorage.setItem(
+"ecoDark",
+document.body.classList.contains(
+"dark"
+)
+);
+
+}
+
+
+if(
+localStorage.getItem(
+"ecoDark"
+)==="true"
+){
+
+document.body.classList.add(
+"dark"
+);
+
+}
+
+
+/* ==========================================
+   TOAST
+========================================== */
+
+function toast(message){
+
+let t =
+document.getElementById(
+"toast"
+);
+
+
+t.textContent=message;
+
+t.classList.add("show");
+
+
+setTimeout(()=>{
+
+t.classList.remove("show");
+
+},2500);
+
+}
+
+
+/* ==========================================
+   START
+========================================== */
+
+render();
+
+openRoomFromQR();
+
+</script>
+
+</body>
+</html>
