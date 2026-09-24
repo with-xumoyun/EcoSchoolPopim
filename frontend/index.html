@@ -1010,7 +1010,7 @@ input,select,textarea{width:100%;border:1px solid #d4e4db;border-radius:12px;pad
 
 <script>
 
-const API = "/api";
+const API = "https://ecoschoolpopim-production.up.railway.app/api";
 
 let rooms = [];
 let currentRoom = null;
@@ -1350,7 +1350,7 @@ function showRoomData(){
     loadRoomScore(currentRoom.id);
 
     currentQRLink =
-        `${window.location.origin}/app/?room=${currentRoom.id}`;
+        `${window.location.origin}/?room=${currentRoom.id}`;
 }
 
 
@@ -2036,7 +2036,7 @@ function createQR(elementId){
     box.innerHTML = "";
 
     currentQRLink =
-        `${window.location.origin}/app/?room=${currentRoom.id}`;
+        `${window.location.origin}/?room=${currentRoom.id}`;
 
     new QRCode(box,{
         text:currentQRLink,
@@ -3261,7 +3261,7 @@ async function loadProDashboard() {
     if (old) old.remove();
 
     try {
-        const response = await fetch("/api/overview");
+        const response = await fetch(API + "/overview");
         const data = await response.json();
 
         const floors = data.floors || [];
@@ -3275,7 +3275,7 @@ async function loadProDashboard() {
         let totalScore = 0;
 
         try {
-            const statsResponse = await fetch("/api/statistics");
+            const statsResponse = await fetch(API + "/statistics");
             const stats = await statsResponse.json();
 
             totalRooms =
