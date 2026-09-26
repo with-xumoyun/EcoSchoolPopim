@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from database import get_connection, init_database, seed_rooms
+from database import get_connection, init_db, seed_rooms
 
 
 # =========================================================
@@ -46,7 +46,7 @@ ADMIN_CODE = "popim242526"
 # 🗄️ DATABASE
 # =========================================================
 
-init_database()
+init_db()
 seed_rooms()
 
 

@@ -1,74 +1,112 @@
+
 import sqlite3
+from pathlib import Path
 
-DATABASE = "eco_school.db"
 
+# =========================================================
+# 🌱 ECO SCHOOL POPIM — DATABASE
+# =========================================================
+
+BASE_DIR = Path(__file__).resolve().parent
+
+DB_PATH = BASE_DIR / "eco_school.db"
+
+
+# =========================================================
+# 🔌 DATABASE CONNECTION
+# =========================================================
 
 def get_connection():
-    connection = sqlite3.connect(DATABASE)
-    connection.row_factory = sqlite3.Row
+    conn = sqlite3.connect(DB_PATH)
 
-    # Foreign key ishlashi uchun
-    connection.execute("PRAGMA foreign_keys = ON")
+    conn.row_factory = sqlite3.Row
 
-    return connection
+    conn.execute("PRAGMA foreign_keys = ON")
+
+    return conn
 
 
-def init_database():
-    connection = get_connection()
-    cursor = connection.cursor()
+# =========================================================
+# 🏗 DATABASE INITIALIZATION
+# =========================================================
 
-    # ==========================================
-    # 🏫 XONALAR
-    # ==========================================
+def init_db():
 
-    cursor.execute("""
+    conn = get_connection()
+
+    cur = conn.cursor()
+
+    # =====================================================
+    # 🏫 ROOMS
+    # =====================================================
+
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS rooms (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             class_name TEXT NOT NULL,
+
             room_number TEXT NOT NULL,
+
             teacher TEXT NOT NULL,
+
             responsible TEXT,
+
             password TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            UNIQUE(class_name, room_number)
         )
     """)
 
-    # ==========================================
-    # 🌱 O'SIMLIKLAR
-    # ==========================================
+    # =====================================================
+    # 🌱 PLANTS
+    # =====================================================
 
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS plants (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             room_id INTEGER NOT NULL,
+
             name TEXT NOT NULL,
+
             count INTEGER NOT NULL DEFAULT 1,
+
             image TEXT,
-            FOREIGN KEY (room_id) REFERENCES rooms(id)
-            ON DELETE CASCADE
+
+            FOREIGN KEY(room_id)
+                REFERENCES rooms(id)
+                ON DELETE CASCADE
         )
     """)
 
-    # ==========================================
-    # 🔌 ROZETKALAR
-    # ==========================================
+    # =====================================================
+    # 🔌 SOCKETS
+    # =====================================================
 
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS sockets (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             room_id INTEGER NOT NULL,
+
             socket_type TEXT NOT NULL,
+
             count INTEGER NOT NULL DEFAULT 1,
-            FOREIGN KEY (room_id) REFERENCES rooms(id)
-            ON DELETE CASCADE
+
+            FOREIGN KEY(room_id)
+                REFERENCES rooms(id)
+                ON DELETE CASCADE
         )
     """)
 
-    # ==========================================
-    # 🏆 MUSOBAQALAR
-    # ==========================================
+    # =====================================================
+    # 🏆 COMPETITIONS
+    # =====================================================
 
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS competitions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
 
@@ -80,17 +118,17 @@ def init_database():
 
             end_date TEXT,
 
-            status TEXT NOT NULL DEFAULT 'active',
+            status TEXT DEFAULT 'active',
 
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
 
-    # ==========================================
-    # ⭐ BALLAR
-    # ==========================================
+    # =====================================================
+    # ⭐ SCORES
+    # =====================================================
 
-    cursor.execute("""
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS scores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
 
@@ -98,37 +136,47 @@ def init_database():
 
             competition_id INTEGER,
 
-            points INTEGER NOT NULL,
+            points INTEGER NOT NULL DEFAULT 0,
 
             reason TEXT,
 
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-            FOREIGN KEY (room_id)
+            FOREIGN KEY(room_id)
                 REFERENCES rooms(id)
                 ON DELETE CASCADE,
 
-            FOREIGN KEY (competition_id)
+            FOREIGN KEY(competition_id)
                 REFERENCES competitions(id)
                 ON DELETE SET NULL
         )
     """)
 
-    connection.commit()
-    connection.close()
+    conn.commit()
+
+    conn.close()
+
+    print("==========================================")
+    print("🌱 Eco School PopIm")
+    print("==========================================")
+    print("✅ Database tayyor!")
+    print("🏫 Xonalar jadvali tayyor")
+    print("🌱 O'simliklar jadvali tayyor")
+    print("🔌 Rozetkalar jadvali tayyor")
+    print("🏆 Musobaqalar jadvali tayyor")
+    print("⭐ Ballar jadvali tayyor")
+    print("==========================================")
 
 
-# ==========================================
-# 🏫 BOSHLANG'ICH XONALAR
-# ==========================================
+# =========================================================
+# 🏫 14 TA SINFNI YARATISH / YANGILASH
+# =========================================================
 
 def seed_rooms():
 
-    connection = get_connection()
-    cursor = connection.cursor()
-
     rooms = [
 
+        # 5-SINF
         (
             "5.01",
             "213",
@@ -145,6 +193,7 @@ def seed_rooms():
             "A-N-502-104"
         ),
 
+        # 6-SINF
         (
             "6.01",
             "103",
@@ -161,6 +210,7 @@ def seed_rooms():
             "R-N-602-217"
         ),
 
+        # 7-SINF
         (
             "7.01",
             "307",
@@ -193,6 +243,7 @@ def seed_rooms():
             "B-Sh-704-218"
         ),
 
+        # 8-SINF
         (
             "8.01",
             "216",
@@ -217,6 +268,7 @@ def seed_rooms():
             "Y-F-803-101"
         ),
 
+        # 9-SINF
         (
             "9.01",
             "115",
@@ -225,6 +277,7 @@ def seed_rooms():
             "P-Sh-901-115"
         ),
 
+        # 10-SINF
         (
             "10.01",
             "301",
@@ -233,6 +286,7 @@ def seed_rooms():
             "S-I-1001-301"
         ),
 
+        # 11-SINF
         (
             "11.01",
             "206",
@@ -242,70 +296,97 @@ def seed_rooms():
         )
     ]
 
+    conn = get_connection()
 
-    # ==========================================
-    # 🔎 XONALAR MAVJUDLIGINI TEKSHIRISH
-    # ==========================================
+    cur = conn.cursor()
 
-    for room in rooms:
+    # =====================================================
+    # HAR BIR SINFNI TEKSHIRAMIZ
+    # =====================================================
 
-        cursor.execute(
-            """
+    for class_name, room_number, teacher, responsible, password in rooms:
+
+        cur.execute("""
             SELECT id
             FROM rooms
             WHERE class_name = ?
-            AND room_number = ?
-            """,
-            (
-                room[0],
-                room[1]
-            )
-        )
+              AND room_number = ?
+        """, (
+            class_name,
+            room_number
+        ))
 
-        existing_room = cursor.fetchone()
+        existing = cur.fetchone()
 
+        # =================================================
+        # AGAR SINF MAVJUD BO'LSA
+        # MA'LUMOTLARINI YANGILAYMIZ
+        # =================================================
 
-        # Agar xona mavjud bo'lmasa qo'shamiz
-        if existing_room is None:
+        if existing:
 
-            cursor.execute(
-                """
-                INSERT INTO rooms
-                (
+            cur.execute("""
+                UPDATE rooms
+
+                SET
+                    teacher = ?,
+                    responsible = ?,
+                    password = ?
+
+                WHERE id = ?
+            """, (
+                teacher,
+                responsible,
+                password,
+                existing["id"]
+            ))
+
+        # =================================================
+        # AGAR SINF YO'Q BO'LSA
+        # YANGI SINF YARATAMIZ
+        # =================================================
+
+        else:
+
+            cur.execute("""
+                INSERT INTO rooms (
                     class_name,
                     room_number,
                     teacher,
                     responsible,
                     password
                 )
+
                 VALUES (?, ?, ?, ?, ?)
-                """,
-                room
-            )
+            """, (
+                class_name,
+                room_number,
+                teacher,
+                responsible,
+                password
+            ))
+
+    conn.commit()
+
+    conn.close()
+
+    print("==========================================")
+    print("🏫 14 TA SINF TEKSHIRILDI")
+    print("🔐 14 TA PAROL YANGILANDI")
+    print("==========================================")
 
 
-    connection.commit()
-    connection.close()
-
-
-# ==========================================
-# 🚀 DATABASE ISHGA TUSHIRISH
-# ==========================================
+# =========================================================
+# 🚀 DATABASE START
+# =========================================================
 
 if __name__ == "__main__":
 
-    init_database()
+    init_db()
 
     seed_rooms()
 
-    print()
+    print("")
     print("==========================================")
-    print("🌱 Eco School PopIm")
-    print("==========================================")
-    print("✅ Database tayyor!")
-    print("🏫 Xonalar jadvali tayyor")
-    print("🌱 O'simliklar jadvali tayyor")
-    print("🔌 Rozetkalar jadvali tayyor")
-    print("🏆 Musobaqalar jadvali tayyor")
-    print("⭐ Ballar jadvali tayyor")
+    print("✅ ECO SCHOOL POPIM DATABASE TAYYOR!")
     print("==========================================")
