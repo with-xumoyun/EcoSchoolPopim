@@ -389,23 +389,23 @@ def room_login(
     room = get_room(room_id)
 
     if room is None:
-
         raise HTTPException(
             status_code=404,
             detail="Xona topilmadi"
         )
 
+    # Parolni tekshirish
     if request.password != room["password"]:
+        return {
+            "success": False,
+            "message": "Xona paroli noto‘g‘ri"
+        }
 
-        raise HTTPException(
-            status_code=401,
-            detail="Xona paroli noto‘g‘ri"
-        )
-
-    return get_full_room(
-        room_id,
-        include_password=True
-    )
+    # To‘g‘ri parol
+    return {
+        "success": True,
+        "message": "Xona boshqaruviga kirildi"
+    }
 
 
 # =========================================================
